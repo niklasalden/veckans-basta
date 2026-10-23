@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veckans Bästa</title>
+
+<style>
+
+@font-face {
+    font-family: 'RobotoCondensed';
+    src: url('./fonts/RobotoCondensed-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'RobotoCondensedBold';
+    src: url('./fonts/RobotoCondensed-Bold.ttf') format('truetype');
+}
+
+/* ==========================
+   ADMIN
+========================== */
+
+body{
+    font-family:Arial,sans-serif;
+    padding:30px;
+    background:#3a3a3a;
+    color:#52010a;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:#000000;
+
+    padding:20px 30px;
+
+    border-radius:14px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+.header h1{
+    margin:0;
+    color:white;
+    font-size:42px;
+    font-family:'RobotoCondensedBold';
+}
+
+.logo{
+    height:90px;
+    width:auto;
+}
+
+#playerList{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.10);
+    margin-bottom:20px;
+}
+
+.player-row{
+
+    display:grid;
+
+    grid-template-columns:
+        350px
+        120px
+        120px
+        120px
+        120px;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:8px 0;
+
+    border-bottom:1px solid #dfe6ee;
+}
+
+.player-row:last-child{
+    border-bottom:none;
+}
+
+.player-row label{
+    font-size:16px;
+    font-weight:600;
+    color:#012b52;
+}
+
+.player-row input{
+
+    width:100px;
+
+    padding:8px;
+
+    background:#111111;
+
+    color:#ffffff;
+
+    border:1px solid #444444;
+
+    border-radius:8px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    font-weight:bold;
+}
+
+.player-row input::placeholder{
+    color:#bdbdbd;
+}
+
+.buttonBar{
+    margin-bottom:25px;
+}
+
+button{
+    background:#d7cc22;
+    color:#012b52;
+
+    border:none;
+    border-radius:8px;
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+    font-size:15px;
+
+    margin-right:10px;
+}
+
+button:hover{
+    filter:brightness(1.08);
+}
+
+/* ==========================
+   GENERERAT KORT
+========================== */
+
+.renderCard{
+
+    width:1080px;
+    height:1350px;
+
+    position:relative;
+
+    background-image:url('images/graphics/vb_background.jpg');
+    background-size:cover;
+    background-position:center;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+}
+
+/* ==========================
+   VINNARBILD
+========================== */
+
+.winnerPhoto{
+    position:absolute;
+
+    right:-60px;
+    top:-50px;
+
+    width:790px;
+    height:auto;
+
+    z-index:1;
+
+    filter:
+        drop-shadow(
+            0 0 50px rgba(255,255,255,0.33)
+        );
+
+}
+
+/* ==========================
+   OVERLAY
+========================== */
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    z-index:2;
+
+    pointer-events:none;
+}
+
+/* ==========================
+   TOPPLISTA
+========================== */
+
+.topList{
+
+    position:absolute;
+
+    left:90px;
+    top:650px;
+
+    width:720px;
+
+    z-index:10;
+}
+
+.rankRow{
+    display:grid;
+
+    grid-template-columns:1fr 70px;
+
+    align-items:start;
+
+    margin-bottom:6px;
+}
+
+.rankName{
+    font-family:'RobotoCondensed';
+
+    font-size:50px;
+    line-height:0.9;
+
+    color:#d0d0d0;
+
+    white-space:nowrap;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.75);
+}
+
+.rankScore{
+    font-family:'RobotoCondensed';
+
+    font-size:50px;
+    line-height:0.9;
+
+    text-align:right;
+
+    color:#d0d0d0;
+
+    white-space:nowrap;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.75);
+}
+
+.rankWinner{
+    font-family:'RobotoCondensedBold';
+    color:#d7cc22;
+}
+
+.winnerSize{
+    font-size:60px;
+}
+
+#cardsContainer{
+
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:30px;
+
+    margin-top:30px;
+}
+
+.teamCardWrapper{
+
+    width:340px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.teamTitle{
+
+    color:white;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+}
+
+.cardPreview{
+
+    width:324px;
+    height:405px;
+
+    overflow:hidden;
+
+    position:relative;
+}
+
+.exportTeamBtn{
+
+    position:relative;
+
+    z-index:9999;
+
+    background:#d7cc22;
+
+    color:#012b52;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    font-size:15px;
+
+    display:block;
+
+    margin-top:20px;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div>
+        <h1>Veckans Bästa</h1>
+    </div>
+
+    <img
+        src="images/graphics/VIK_Bowling_Logo_SMALL.png"
+        class="logo">
+</div>
+
+<div id="playerList"></div>
+
+<div class="buttonBar">
+
+    <button id="generateBtn">
+        Generera alla lag
+    </button>
+
+</div>
+
+<div id="cardsContainer"></div>
+
+
+<script>
+
+const CARD_WIDTH = 1080;
+
+const playerList = document.getElementById('playerList');
+const generateBtn = document.getElementById('generateBtn');
+
+const TEAMS = {
+
+    a: {
+        name: 'A-laget',
+        overlay: 'images/graphics/vb_overlay_a.png'
+    },
+
+    f1: {
+        name: 'Farmen 1',
+        overlay: 'images/graphics/vb_overlay_f1.png'
+    },
+
+    f2: {
+        name: 'Farmen 2',
+        overlay: 'images/graphics/vb_overlay_f2.png'
+    },
+
+    b: {
+        name: 'B-laget',
+        overlay: 'images/graphics/vb_overlay_b.png'
+    }
+
+};
+
+/* ==========================
+   SKALA KORTET
+========================== */
+
+function scaleCard() {
+    // Tom tills vidare
+}
+
+/* ==========================
+   LADDA SPELARE
+========================== */
+
+fetch('data/players.json')
+    .then(response => response.json())
+    .then(players => {
+
+        playerList.innerHTML = '';
+
+        players.forEach(player => {
+
+            const row =
+                document.createElement('div');
+
+            row.className = 'player-row';
+
+row.innerHTML = `
+
+    <label>${player.name}</label>
+
+    <input
+        type="number"
+        placeholder="A"
+        data-team="a"
+        data-name="${player.name}"
+        data-image="${player.image}">
+
+    <input
+        type="number"
+        placeholder="F1"
+        data-team="f1"
+        data-name="${player.name}"
+        data-image="${player.image}">
+
+    <input
+        type="number"
+        placeholder="F2"
+        data-team="f2"
+        data-name="${player.name}"
+        data-image="${player.image}">
+
+    <input
+        type="number"
+        placeholder="B"
+        data-team="b"
+        data-name="${player.name}"
+        data-image="${player.image}">
+`;
+
+            playerList.appendChild(row);
+
+        });
+
+    });
+
+/* ==========================
+   GENERERA KORT
+========================== */
+
+generateBtn.addEventListener('click', () => {
+
+    const cardsContainer =
+        document.getElementById('cardsContainer');
+
+        cardsContainer.innerHTML = '';
+
+        Object.keys(TEAMS).forEach(teamKey => {
+
+        const team =
+        TEAMS[teamKey];
+
+        const results = [];
+
+        document
+            .querySelectorAll(`input[data-team="${teamKey}"]`)
+            .forEach(input => {
+
+                if (!input.value) return;
+
+                results.push({
+
+                    name: input.dataset.name,
+                    image: input.dataset.image,
+                    score: Number(input.value)
+
+                });
+
+            });
+
+        if (!results.length) return;
+
+        const topFive = results
+            .sort((a,b) => b.score - a.score)
+            .slice(0,5);
+
+        const winner = topFive[0];
+
+        const wrapper =
+            document.createElement('div');
+
+        wrapper.className =
+            'teamCardWrapper';
+
+        wrapper.innerHTML = `
+
+<div class="teamTitle">
+    ${TEAMS[teamKey].name}
+</div>
+
+<div class="cardPreview">
+
+    <div
+        class="renderCard"
+        id="card-${teamKey}"
+        style="transform:scale(0.3); transform-origin:top left;">
+
+<img
+    class="winnerPhoto"
+    src="${winner.image}"
+    onerror="this.remove()">
+
+                <img
+                    class="overlay"
+                    src="${team.overlay}">
+
+                <div class="topList">
+
+                    ${topFive.map((player,index) => `
+
+                        <div class="rankRow">
+
+                            <div class="rankName ${index === 0 ? 'rankWinner winnerSize' : ''}">
+                                ${index + 1}. ${player.name}
+                            </div>
+
+                            <div class="rankScore ${index === 0 ? 'rankWinner winnerSize' : ''}">
+                                ${player.score}
+                            </div>
+
+                        </div>
+
+                    `).join('')}
+
+                </div>
+
+            </div>
+</div>
+
+<button
+    class="exportTeamBtn"
+    data-team="${teamKey}"
+    style="
+        background:red;
+        color:white;
+        padding:20px;
+        font-size:20px;
+        margin-top:20px;
+    ">
+    EXPORTERA PNG
+</button>
+
+`;
+        cardsContainer.appendChild(wrapper);
+
+    });
+
+});
+
+
+
+/* ==========================
+   EXPORTERA PNG
+========================== */
+
+document.addEventListener('click', async (event) => {
+
+    if (!event.target.classList.contains('exportTeamBtn'))
+        return;
+
+const teamKey =
+    event.target.dataset.team;
+
+const card =
+    document.getElementById(`card-${teamKey}`);
+
+const oldTransform =
+    card.style.transform;
+
+card.style.transform = 'none';
+
+const canvas =
+    await html2canvas(card,{
+        scale:1,
+        useCORS:true
+    });
+
+card.style.transform =
+    oldTransform;
+
+const link =
+    document.createElement('a');
+
+const today =
+    new Date().toISOString().split('T')[0];
+
+link.download =
+    `VeckansBasta-${teamKey}.png`;
+
+link.href =
+    canvas.toDataURL('image/png');
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+});
+
+/* ==========================
+   EVENTS
+========================== */
+
+if (typeof scaleCard === 'function') {
+
+    window.addEventListener('resize', scaleCard);
+    window.addEventListener('load', scaleCard);
+
+}
+
+</script>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+</body>
+</html>
