@@ -289,7 +289,7 @@ button:hover{
 }
 
 .rankRow:first-child{
-    margin-bottom:30px;
+    margin-bottom:20px;
 }
 
 .rankRow{
@@ -693,8 +693,8 @@ window.bitsResults[teamKey].forEach(player => {
 
 <img
     class="winnerPhoto"
-    src="${winner.image}"
-    onerror="this.remove()">
+    src="${winner.image || 'images/players/default.png'}"
+    onerror="this.src='images/players/default.png'">
 
                 <img
                 class="overlay"
