@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veckans Bästa</title>
+
+<style>
+
+@font-face {
+    font-family: 'RobotoCondensed';
+    src: url('./fonts/RobotoCondensed-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'RobotoCondensedBold';
+    src: url('./fonts/RobotoCondensed-Bold.ttf') format('truetype');
+}
+
+/* ==========================
+   ADMIN
+========================== */
+
+#roundSelect {
+    margin-right: 15px;
+
+    position: relative;
+    top: 3px;
+
+    background: #111;
+    color: #fff;
+
+    border: 2px solid #e2c500;
+    border-radius: 20px;
+
+    padding: 12px 16px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    height: 44px;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    padding:30px;
+    background:#343434;
+    color:#52010a;
+}
+
+.header{
+    display:flex;
+    justify-content:left;
+    align-items:center;
+
+    gap:20px;
+
+    background:#000000;
+
+    padding:20px 30px;
+
+    border-radius:14px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+.header h1{
+    margin:0;
+    color:white;
+    font-size:42px;
+    font-family:'RobotoCondensedBold';
+}
+
+.logo{
+    height:90px;
+    width:auto;
+}
+
+#playerList{
+    background:rgb(228, 228, 228);
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.10);
+    margin-bottom:20px;
+}
+
+.player-row{
+
+    display:grid;
+
+    grid-template-columns:
+        200px
+        90px
+        90px
+        90px
+        90px;
+
+    align-items:center;
+
+    gap:25px;
+
+    padding:8px 0;
+
+    border-bottom:1px solid #dfe6ee;
+}
+
+.player-row:last-child{
+    border-bottom:none;
+}
+
+.player-row label{
+    font-size:16px;
+    font-weight:600;
+    color:#2d2d2d;
+}
+
+.player-row input{
+
+    width:90px;
+
+    padding:8px;
+
+    background:#111111;
+
+    color:#ff4040;
+
+    border:1px solid #888888;
+
+    border-radius:10px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+
+}
+
+.player-row input::placeholder{
+
+color:#ff4040;
+}
+
+.player-row input:not(:placeholder-shown){
+
+    color:#00ff66;
+}
+
+.buttonBar{
+    margin-bottom:25px;
+}
+
+button{
+    background:#dfc206;
+    color:#1b1b1b;
+
+    border:none;
+    border-radius:20px;
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+    font-size:15px;
+
+    margin-right:10px;
+}
+
+button:hover{
+    filter:brightness(1.2);
+}
+
+/* ==========================
+   GENERERAT KORT
+========================== */
+
+.renderCard{
+
+    width:1080px;
+    height:1440px;
+
+    position:relative;
+
+    background-image:url('images/graphics/vb_background.jpg');
+    background-size:cover;
+    background-position:center;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+}
+
+/* ==========================
+   VINNARBILD
+========================== */
+
+.winnerPhoto{
+    position:absolute;
+
+    right:-60px;
+    top:-10px;
+
+    width:750px;
+    height:auto;
+
+    z-index:1;
+
+    filter:
+        drop-shadow(
+            0 0 50px rgba(255,255,255,0.33)
+        );
+
+}
+
+/* ==========================
+   OVERLAY
+========================== */
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    z-index:2;
+
+    pointer-events:none;
+}
+
+.matchInfo{
+
+    position:absolute;
+
+    left:90px;
+
+    top:340px;
+
+    z-index:10;
+}
+
+.divisionText{
+
+    font-family:'RobotoCondensed';
+
+    font-size:28px;
+
+    color:#ffffff;
+
+    margin-top:5px;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.75);
+}
+
+.roundText{
+
+    font-family:'RobotoCondensedBold';
+
+    font-size:34px;
+
+    color:#d7cc22;
+
+    text-transform:uppercase;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.75);
+}
+
+/* ==========================
+   TOPPLISTA
+========================== */
+
+.topList{
+
+    position:absolute;
+
+    left:90px;
+    top:680px;
+
+    width:720px;
+
+    z-index:10;
+}
+
+.rankRow:first-child{
+    margin-bottom:30px;
+}
+
+.rankRow{
+    display:grid;
+
+    grid-template-columns:1fr 100px;
+
+    align-items:start;
+
+    margin-bottom:12px;
+}
+
+.rankName{
+    font-family:'RobotoCondensed';
+
+    font-size:40px;
+    line-height:0.9;
+
+    color:#d0d0d0;
+
+    white-space:nowrap;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.75);
+}
+
+.rankScore{
+    font-family:'RobotoCondensed';
+
+    font-size:40px;
+    line-height:0.9;
+
+    text-align:right;
+
+    color:#d0d0d0;
+
+    white-space:nowrap;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.75);
+}
+
+.rankWinner{
+    font-family:'RobotoCondensedBold';
+    color:#d7cc22;
+}
+
+.winnerSize{
+    font-size:60px;
+}
+
+#cardsContainer{
+
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:30px;
+
+    margin-top:30px;
+}
+
+.teamCardWrapper{
+
+    width:360px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:0px;
+}
+
+.teamTitle{
+
+    color:white;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+}
+
+.cardPreview{
+
+    width:324px;
+    height:480px;
+
+    position:relative;
+
+    max-width:100%;
+
+    overflow:hidden;
+}
+
+.exportTeamBtn{
+
+    width:324px;
+    
+    position:relative;
+
+    z-index:9999;
+
+    background:#d7cc22;
+
+    color:#000000;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:10px 10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    font-size:15px;
+
+    display:block;
+
+    margin-top:0px;
+
+}
+
+/* Chrome, Edge, Opera */
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+
+    -webkit-appearance: none;
+    margin: 0;
+
+}
+
+/* Firefox */
+
+input[type="number"] {
+
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+}
+
+@media (max-width: 768px) {
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+
+        flex-direction:column;
+
+        gap:10px;
+
+        text-align:center;
+    }
+
+    .logo{
+
+        height:70px;
+    }
+
+    #playerList{
+
+        padding:10px;
+    }
+
+    .player-row{
+
+        display:block;
+
+        padding:5px 0;
+    }
+
+    .player-row label{
+
+        display:block;
+
+        margin-bottom:5px;
+
+        font-size:16px;
+    }
+
+    .player-row input{
+
+        width:50px;
+
+        margin-right:2px;
+
+        margin-bottom:10px;
+    }
+
+    .buttonBar{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+    .buttonBar button{
+
+        width:100%;
+    }
+
+    #cardsContainer{
+
+        display:block;
+    }
+
+    .teamCardWrapper{
+
+        width:100%;
+
+        margin-bottom:0px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <img
+    src="images/graphics/VIK_Bowling_Logo_SMALL.png"
+    class="logo">
+    
+    <h1>Veckans Bästa</h1>
+
+</div>
+
+<div class="buttonBar">
+
+<select id="roundSelect">
+    <option value="">Laddar omgångar...</option>
+</select>
+
+<button id="generateBtn">
+    Generera alla lag
+</button>
+
+</div>
+
+<div id="cardsContainer"></div>
+
+
+<script>
+
+const generateBtn = document.getElementById('generateBtn');
+
+const roundSelect =
+    document.getElementById('roundSelect');
+
+const OVERLAY_IMAGE =
+    'images/graphics/vb_overlay.png';
+
+const TEAMS = {
+
+    a: {
+        name: 'A-laget'
+    },
+
+    f1: {
+        name: 'Farmen 1'
+    },
+
+    f2: {
+        name: 'Farmen 2'
+    },
+
+    b: {
+        name: 'B-laget'
+    }
+
+};
+
+let playerImages = {};
+
+let availableRounds = new Set();
+
+fetch('data/player-images.json')
+    .then(response => response.json())
+    .then(data => {
+
+        playerImages = data;
+
+    });
+
+
+/* ==========================
+   GENERERA KORT
+========================== */
+
+generateBtn.addEventListener('click', async () => {
+
+    const selectedRound =
+        parseInt(roundSelect.value);
+
+    if (!selectedRound) return;
+
+    generateBtn.disabled = true;
+    generateBtn.textContent = 'Genererar...';
+    generateBtn.style.background = '#666';
+    generateBtn.style.color = '#fff';
+
+    const teamMatchA =
+        await loadTeamFromBits('a', selectedRound);
+
+    const teamMatchF1 =
+        await loadTeamFromBits('f1', selectedRound);
+
+    const teamMatchF2 =
+        await loadTeamFromBits('f2', selectedRound);
+
+    const teamMatchB =
+        await loadTeamFromBits('b', selectedRound);
+
+    window.bitsMatchInfo =
+        window.bitsMatchInfo || {};
+
+    window.bitsMatchInfo['a'] = teamMatchA;
+    window.bitsMatchInfo['f1'] = teamMatchF1;
+    window.bitsMatchInfo['f2'] = teamMatchF2;
+    window.bitsMatchInfo['b'] = teamMatchB;
+
+    await loadMatchResults();
+
+    const cardsContainer =
+        document.getElementById('cardsContainer');
+
+        cardsContainer.innerHTML = '';
+
+        Object.keys(TEAMS).forEach(teamKey => {
+
+        const team = TEAMS[teamKey];
+
+        const currentMatchInfo =
+            window.bitsMatchInfo?.[teamKey];
+
+        const division =
+            currentMatchInfo?.matchDivisionName ||
+            'Division saknas';
+
+        const round =
+            `Omgång ${currentMatchInfo?.matchRoundId || ''}`;
+
+        const results = [];
+
+window.bitsResults[teamKey].forEach(player => {
+
+    const playerName =
+        player.player.split(' (')[0];
+
+    results.push({
+
+        name: playerName,
+
+        image:
+            playerImages[player.licNbr] ||
+            'images/players/default.png',
+
+        score: player.totalResult
+
+
+    });
+
+});
+
+
+        if (!results.length) return;
+
+        const topFive = results
+            .sort((a,b) => b.score - a.score)
+            .slice(0,5);
+
+        const winner = topFive[0];
+
+        const wrapper =
+            document.createElement('div');
+
+        wrapper.className =
+            'teamCardWrapper';
+
+        wrapper.innerHTML = `
+
+<div class="teamTitle">
+    ${TEAMS[teamKey].name}
+</div>
+
+<div class="cardPreview">
+
+    <div
+        class="renderCard"
+        id="card-${teamKey}"
+        style="transform:scale(0.3);
+        transform-origin:top left;">
+
+<img
+    class="winnerPhoto"
+    src="${winner.image}"
+    onerror="this.remove()">
+
+                <img
+                class="overlay"
+                src="${OVERLAY_IMAGE}">
+
+                <div class="matchInfo">
+
+                <div class="roundText">
+                ${team.name.toUpperCase()} - ${round.toUpperCase()}
+            </div>
+
+                <div class="divisionText">
+                ${division}
+        </div>
+
+</div>
+
+                <div class="topList">
+
+                    ${topFive.map((player,index) => `
+
+                        <div class="rankRow">
+
+                            <div class="rankName ${index === 0 ? 'rankWinner winnerSize' : ''}">
+                                ${index + 1}. ${player.name}
+                            </div>
+
+                            <div class="rankScore ${index === 0 ? 'rankWinner winnerSize' : ''}">
+                                ${player.score}
+                            </div>
+
+                        </div>
+
+                    `).join('')}
+
+                </div>
+
+            </div>
+</div>
+
+<button
+    class="exportTeamBtn"
+    data-team="${teamKey}">
+    EXPORTERA PNG
+</button>
+
+`;
+        cardsContainer.appendChild(wrapper);
+
+});
+
+generateBtn.disabled = false;
+generateBtn.textContent = 'Generera alla lag';
+generateBtn.style.background = '#dfc206';
+generateBtn.style.color = '#1b1b1b';
+
+});
+
+
+
+/* ==========================
+   EXPORTERA PNG
+========================== */
+
+const TEAMS_BITS = {
+    a: {
+        teamId: 90792,
+        divisionId: 12
+    },
+    f1: {
+        teamId: 186762,
+        divisionId: 927
+    },
+    f2: {
+        teamId: 186767,
+        divisionId: 951
+    },
+    b: {
+        teamId: 153567,
+        divisionId: 844
+    }
+};
+
+async function loadTeamFromBits(teamKey, roundId = null) {
+
+    const currentYear = new Date().getFullYear();
+
+    const TEAM = TEAMS_BITS[teamKey];
+
+    const TEAM_ID = TEAM.teamId;
+    const DIVISION_ID = TEAM.divisionId;
+    const SEASON_ID = currentYear;
+    
+    const matchesUrl =
+    `https://bits.swebowl.se/MiscFrontApiConnector/ListMatches?divisionId=${DIVISION_ID}&seasonId=${SEASON_ID}&matchStatus=`;
+
+    const matchesResponse =
+        await fetch(matchesUrl);
+
+    const matches =
+        await matchesResponse.json();
+
+    matches
+        .filter(m => m.matchHasBeenPlayed)
+        .forEach(m =>
+            availableRounds.add(m.matchRoundId)
+        );
+
+    const varkullaMatches = matches.filter(
+        match =>
+            match.matchHasBeenPlayed &&
+            (
+                match.matchHomeTeamId === TEAM_ID ||
+                match.matchAwayTeamId === TEAM_ID
+            )
+);
+
+varkullaMatches.sort(
+    (a, b) =>
+        new Date(b.matchDateTime) -
+        new Date(a.matchDateTime)
+);
+
+if (roundId !== null) {
+
+    const roundMatch =
+        varkullaMatches.find(
+            match => match.matchRoundId == roundId
+        );
+
+    return roundMatch || null;
+}
+
+const latestMatch =
+    varkullaMatches[0];
+
+return latestMatch;
+
+}
+
+async function loadMatchResults() {
+
+    const matchIds = {
+        a:  window.bitsMatchInfo.a.matchId,
+        f1: window.bitsMatchInfo.f1.matchId,
+        f2: window.bitsMatchInfo.f2.matchId,
+        b:  window.bitsMatchInfo.b.matchId
+    };
+
+    window.bitsResults = {};
+
+    for (const teamKey of ['a', 'f1', 'f2', 'b']) {
+
+        const url =
+            `https://bits.swebowl.se/MiscFrontApiConnector/GetMatchResults?matchId=${matchIds[teamKey]}&matchSchemeId=8M8BA`;
+
+        const response =
+            await fetch(url);
+
+        const data =
+            await response.json();
+
+        const allPlayers = [
+            ...data.playerListHome,
+            ...data.playerListAway
+        ];
+
+        const teamMatch =
+            window.bitsMatchInfo[teamKey];
+
+        const varkullaSide =
+            teamMatch.matchHomeTeamId ===
+            TEAMS_BITS[teamKey].teamId
+                ? 'H'
+                : 'A';
+
+        const teamPlayers = allPlayers.filter(
+            player =>
+            player.homeOrAwayTeam === varkullaSide
+        );
+
+        window.bitsResults[teamKey] = teamPlayers
+            .sort((a, b) => b.totalResult - a.totalResult)
+            .slice(0, 5);
+    }
+
+}
+
+
+document.addEventListener('click', async (event) => {
+
+    if (!event.target.classList.contains('exportTeamBtn'))
+        return;
+
+const teamKey =
+    event.target.dataset.team;
+
+const card =
+    document.getElementById(`card-${teamKey}`);
+
+const oldTransform =
+    card.style.transform;
+
+card.style.transform = 'none';
+
+const canvas =
+    await html2canvas(card,{
+        scale:1,
+        useCORS:true
+    });
+
+card.style.transform =
+    oldTransform;
+
+const link =
+    document.createElement('a');
+
+link.download =
+    `VeckansBasta-${teamKey}.png`;
+
+link.href =
+    canvas.toDataURL('image/png');
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+});
+
+window.addEventListener('load', async () => {
+
+console.log('LOAD START');
+
+    await loadTeamFromBits('a');
+    await loadTeamFromBits('f1');
+    await loadTeamFromBits('f2');
+    await loadTeamFromBits('b');
+
+    const rounds =
+        [...availableRounds]
+            .sort((a, b) => b - a);
+
+    roundSelect.innerHTML = rounds
+        .map(round =>
+            `<option value="${round}">
+                Omgång ${round}
+            </option>`
+        )
+        .join('');
+
+});
+
+</script>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+</body>
+</html>
