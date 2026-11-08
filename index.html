@@ -17,6 +17,7 @@
     src: url('./fonts/RobotoCondensed-Bold.ttf') format('truetype');
 }
 
+
 /* ==========================
    ADMIN
 ========================== */
@@ -42,115 +43,63 @@
 }
 
 body{
-    font-family:Arial,sans-serif;
-    padding:30px;
-    background:#343434;
-    color:#52010a;
-}
+    box-sizing:border-box;
+
+    font-family:RobotoCondensed;
+    background:#ffffff;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content: center;  /* höjdled */
+    align-items: center;      /* sidled */
+
+    min-height: 100vh;}
 
 .header{
-    display:flex;
-    justify-content:left;
-    align-items:center;
+    width:400px;
 
-    gap:20px;
+    background:#000;
+    border-radius:36px;
 
-    background:#000000;
+    padding:30px;
+    box-sizing:border-box;
+    margin-top:20px;
+    margin-bottom:30px;
 
-    padding:20px 30px;
 
-    border-radius:14px;
-
-    margin-bottom:25px;
-
-    box-shadow:0 5px 20px rgba(0,0,0,.15);
-}
-
-.header h1{
-    margin:0;
-    color:white;
-    font-size:42px;
-    font-family:'RobotoCondensedBold';
+    text-align:center;
 }
 
 .logo{
-    height:90px;
-    width:auto;
+    width:340px;
+    height:auto;
+    display:block;
+    margin:0 auto 20px;
+    object-fit:contain;
+    
 }
 
-#playerList{
-    background:rgb(228, 228, 228);
-    border-radius:14px;
-    padding:25px;
-    box-shadow:0 4px 15px rgba(0,0,0,.10);
-    margin-bottom:20px;
+.introText{
+    color:#ffffff;
+
+    font-size:20px;
+    line-height:1.4;
+
+    margin:15px 0;
 }
 
-.player-row{
+.formatText{
 
-    display:grid;
+    color:#dfc206;
 
-    grid-template-columns:
-        200px
-        90px
-        90px
-        90px
-        90px;
+    font-size:18px;
 
-    align-items:center;
-
-    gap:25px;
-
-    padding:8px 0;
-
-    border-bottom:1px solid #dfe6ee;
-}
-
-.player-row:last-child{
-    border-bottom:none;
-}
-
-.player-row label{
-    font-size:16px;
-    font-weight:600;
-    color:#2d2d2d;
-}
-
-.player-row input{
-
-    width:90px;
-
-    padding:8px;
-
-    background:#111111;
-
-    color:#ff4040;
-
-    border:1px solid #888888;
-
-    border-radius:10px;
-
-    text-align:center;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-
-}
-
-.player-row input::placeholder{
-
-color:#ff4040;
-}
-
-.player-row input:not(:placeholder-shown){
-
-    color:#00ff66;
+    font-style:italic;
 }
 
 .buttonBar{
-    margin-bottom:25px;
+    margin-bottom:0px;
 }
 
 button{
@@ -160,7 +109,7 @@ button{
     border:none;
     border-radius:20px;
 
-    padding:12px 20px;
+    padding:13px 22px;
 
     cursor:pointer;
 
@@ -192,7 +141,7 @@ button:hover{
     overflow:hidden;
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,.25);
+        0 25px 30px rgba(0,0,0,.25);
 }
 
 /* ==========================
@@ -202,19 +151,65 @@ button:hover{
 .winnerPhoto{
     position:absolute;
 
-    right:-60px;
-    top:-10px;
+    right:-50px;
+    top:60px;
 
-    width:750px;
-    height:auto;
+    width:auto;
+    height:1060px;
 
-    z-index:1;
+    z-index:5;
 
     filter:
+        brightness(1.00)
+        saturate(1.00)
         drop-shadow(
             0 0 50px rgba(255,255,255,0.33)
         );
 
+}
+
+.player2{
+    right:250px;
+    top:200px;
+    width:auto;
+    height: 780px;
+    z-index:4;
+    filter:
+        brightness(0.95)
+        saturate(1.0);
+}
+
+.player3{
+    right:420px;
+    top:300px;
+    width:auto;
+    height:660px;
+    z-index:3;
+    filter:
+        brightness(0.9)
+        saturate(1.0);
+}
+
+.player4{
+    right:590px;
+    top:390px;
+    width:auto;
+    height:560px;
+    z-index:2;
+    filter:
+        brightness(0.85)
+        saturate(1.0);
+}
+
+.player5{
+    right:730px;
+    top:425px;
+    width:auto;
+    height:480px;
+    z-index:1;
+    filter:
+        brightness(0.80)
+        saturate(1.0);
 }
 
 /* ==========================
@@ -230,7 +225,7 @@ button:hover{
 
     object-fit:cover;
 
-    z-index:2;
+    z-index:6;
 
     pointer-events:none;
 }
@@ -269,7 +264,7 @@ button:hover{
 
     text-transform:uppercase;
 
-    text-shadow:0 2px 4px rgba(0,0,0,.75);
+    text-shadow:0 2px 4px rgba(0,0,0,.95);
 }
 
 /* ==========================
@@ -340,13 +335,18 @@ button:hover{
 }
 
 #cardsContainer{
-
-    display:flex;
+    display:none;
     flex-wrap:wrap;
+    justify-content:center;
+    align-items:flex-start;
 
-    gap:30px;
+    gap:40px;
 
-    margin-top:30px;
+    width:100%;
+
+    background:#7a7a7a;
+
+    padding:40px 0;
 }
 
 .teamCardWrapper{
@@ -357,7 +357,7 @@ button:hover{
 
     flex-direction:column;
 
-    gap:0px;
+    align-items:center;
 }
 
 .teamTitle{
@@ -380,7 +380,8 @@ button:hover{
 
     max-width:100%;
 
-    overflow:hidden;
+    overflow:visible;
+    
 }
 
 .exportTeamBtn{
@@ -389,17 +390,12 @@ button:hover{
     
     position:relative;
 
-    z-index:9999;
+    background:#000000;
+    color:white;
 
-    background:#d7cc22;
-
-    color:#000000;
-
-    border:none;
-
-    border-radius:8px;
-
-    padding:10px 10px;
+    border: 2px solid #dfc206;
+    
+    border-radius:20px;
 
     cursor:pointer;
 
@@ -407,90 +403,28 @@ button:hover{
 
     font-size:15px;
 
-    display:block;
-
-    margin-top:0px;
-
-}
-
-/* Chrome, Edge, Opera */
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-
-    -webkit-appearance: none;
-    margin: 0;
+    margin-top:-30px;
+    margin-bottom:20px;
 
 }
 
-/* Firefox */
-
-input[type="number"] {
-
-    -moz-appearance: textfield;
-    appearance: textfield;
-
-}
-
-@media (max-width: 768px) {
-
-    body{
-        padding:10px;
-    }
+@media (max-width:300px){
 
     .header{
+    width:100%;
 
-        flex-direction:column;
-
-        gap:10px;
-
-        text-align:center;
-    }
-
-    .logo{
-
-        height:70px;
-    }
-
-    #playerList{
-
-        padding:10px;
-    }
-
-    .player-row{
-
-        display:block;
-
-        padding:5px 0;
-    }
-
-    .player-row label{
-
-        display:block;
-
-        margin-bottom:5px;
-
-        font-size:16px;
-    }
-
-    .player-row input{
-
-        width:50px;
-
-        margin-right:2px;
-
-        margin-bottom:10px;
-    }
+    }  
 
     .buttonBar{
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-        display:flex;
+    gap:25px;
 
-        flex-direction:column;
-
-        gap:10px;
+    margin:0;
     }
-
+    
     .buttonBar button{
 
         width:100%;
@@ -518,22 +452,29 @@ input[type="number"] {
 <div class="header">
 
     <img
-    src="images/graphics/VIK_Bowling_Logo_SMALL.png"
-    class="logo">
-    
-    <h1>Veckans Bästa</h1>
+        src="images/graphics/vb_logo.png"
+        class="logo">
 
-</div>
+    <p class="introText">
+        Genererar bilder med topp 5 resultat<br>
+        för vald omgång, för alla fyra lag.
+    </p>
 
-<div class="buttonBar">
+    <p class="formatText">
+        Format: PNG-bild i 1080x1350 px (4:5)
+    </p>
 
-<select id="roundSelect">
-    <option value="">Laddar omgångar...</option>
-</select>
+    <div class="buttonBar">
 
-<button id="generateBtn">
-    Generera alla lag
-</button>
+        <select id="roundSelect">
+            <option value="">Laddar...</option>
+        </select>
+
+        <button id="generateBtn">
+            Generera alla lag
+        </button>
+
+    </div>
 
 </div>
 
@@ -624,6 +565,8 @@ generateBtn.addEventListener('click', async () => {
     const cardsContainer =
         document.getElementById('cardsContainer');
 
+        cardsContainer.style.display = 'flex';
+
         cardsContainer.innerHTML = '';
 
         Object.keys(TEAMS).forEach(teamKey => {
@@ -691,10 +634,14 @@ window.bitsResults[teamKey].forEach(player => {
         style="transform:scale(0.3);
         transform-origin:top left;">
 
+${topFive.map((player,index) => `
+
 <img
-    class="winnerPhoto"
-    src="${winner.image || 'images/players/default.png'}"
+    class="winnerPhoto player${index + 1}"
+    src="${player.image}"
     onerror="this.src='images/players/default.png'">
+
+`).join('')}
 
                 <img
                 class="overlay"
