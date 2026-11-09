@@ -169,7 +169,7 @@ button:hover{
 }
 
 .player2{
-    right:250px;
+    right:230px;
     top:200px;
     width:auto;
     height: 780px;
@@ -587,8 +587,15 @@ generateBtn.addEventListener('click', async () => {
 
 window.bitsResults[teamKey].forEach(player => {
 
-    const playerName =
-        player.player.split(' (')[0];
+let playerName =
+    player.player.split(' (')[0];
+
+const nameFixes = {
+    'L-I. Nilsson': 'Lars-Inge Nilsson',
+    'P-A. Andersson': 'Pelle Andersson',
+};
+
+playerName = nameFixes[playerName] || playerName;
 
     results.push({
 
