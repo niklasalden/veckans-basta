@@ -571,7 +571,11 @@ generateBtn.addEventListener('click', async () => {
 
         Object.keys(TEAMS).forEach(teamKey => {
 
-        const team = TEAMS[teamKey];
+    if (!window.bitsResults[teamKey]) {
+        return;
+    }
+
+    const team = TEAMS[teamKey];
 
         const currentMatchInfo =
             window.bitsMatchInfo?.[teamKey];
@@ -791,19 +795,19 @@ return latestMatch;
 
 async function loadMatchResults() {
 
-    const matchIds = {
-        a:  window.bitsMatchInfo.a.matchId,
-        f1: window.bitsMatchInfo.f1.matchId,
-        f2: window.bitsMatchInfo.f2.matchId,
-        b:  window.bitsMatchInfo.b.matchId
-    };
-
     window.bitsResults = {};
 
     for (const teamKey of ['a', 'f1', 'f2', 'b']) {
 
+        const teamMatch =
+            window.bitsMatchInfo[teamKey];
+
+        if (!teamMatch) {
+        continue;
+        }
+
         const url =
-            `https://bits.swebowl.se/MiscFrontApiConnector/GetMatchResults?matchId=${matchIds[teamKey]}&matchSchemeId=8M8BA`;
+        `https://bits.swebowl.se/MiscFrontApiConnector/GetMatchResults?matchId=${teamMatch.matchId}&matchSchemeId=8M8BA`;
 
         const response =
             await fetch(url);
@@ -815,9 +819,6 @@ async function loadMatchResults() {
             ...data.playerListHome,
             ...data.playerListAway
         ];
-
-        const teamMatch =
-            window.bitsMatchInfo[teamKey];
 
         const varkullaSide =
             teamMatch.matchHomeTeamId ===
