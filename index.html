@@ -212,7 +212,6 @@ button:hover{
 }
 
 .matchInfo{
-
     position:absolute;
 
     left:390px;
@@ -848,8 +847,11 @@ card.style.transform =
 const link =
     document.createElement('a');
 
+const round =
+    roundSelect.value;
+
 link.download =
-    `VeckansBasta-${teamKey}.png`;
+    `VeckansBasta-${teamKey}-omg${round}.png`;
 
 link.href =
     canvas.toDataURL('image/png');
