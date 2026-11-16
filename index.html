@@ -322,7 +322,7 @@ button:hover{
 #cardsContainer{
     display:none;
     flex-wrap:wrap;
-    justify-content:flex-start;
+    justify-content:center;
     align-items:flex-start;
 
     gap:40px;
@@ -824,23 +824,58 @@ const canvas =
 card.style.transform =
     oldTransform;
 
-const link =
-    document.createElement('a');
+canvas.toBlob(async (blob) => {
 
-const round =
-    roundSelect.value;
+    const file = new File(
+        [blob],
+        `VeckansBasta-${teamKey}-omg${roundSelect.value}.png`,
+        { type: 'image/png' }
+    );
 
-link.download =
-    `VeckansBasta-${teamKey}-omg${round}.png`;
+    const isMobile =
+    /Android|iPhone|iPad|iPod/i.test(
+        navigator.userAgent
+    );
 
-link.href =
-    canvas.toDataURL('image/png');
+    if (
+        isMobile &&
+        navigator.canShare &&
+        navigator.canShare({ files: [file] })
+) {
 
-document.body.appendChild(link);
+        try {
 
-link.click();
+        await navigator.share({
+        files: [file],
+        title: 'Veckans Bästa'
+        });
 
-link.remove();
+} catch (err) {
+
+    console.log('Delning avbruten');
+
+}
+
+    } else {
+
+        const link =
+            document.createElement('a');
+
+        link.download = file.name;
+
+        link.href =
+            URL.createObjectURL(file);
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(link.href);
+    }
+
+});
 
 });
 
