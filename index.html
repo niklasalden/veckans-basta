@@ -48,23 +48,25 @@
 
 body{
     margin:0;
+
     padding:20px;
 
     box-sizing:border-box;
 
     font-family:RobotoCondensed;
-    background:#fff;
+    background:#ffffff;
 
     display:flex;
     flex-direction:column;
+
+    justify-content:center;
     align-items:center;
 
     min-height:100vh;
 }
 
 .header{
-    width:100%;
-    max-width:400px;
+    width:400px;
 
     background:#000;
     border-radius:36px;
@@ -320,7 +322,7 @@ button:hover{
 #cardsContainer{
     display:none;
     flex-wrap:wrap;
-    justify-content:center;
+    justify-content:flex-start;
     align-items:flex-start;
 
     gap:40px;
