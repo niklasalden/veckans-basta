@@ -153,6 +153,11 @@ button:hover{
         0 25px 30px rgba(0,0,0,.25);
 }
 
+.exportRender{
+    transform:none !important;
+
+}
+
 /* ==========================
    VINNARBILD
 ========================== */
@@ -810,19 +815,24 @@ const teamKey =
 const card =
     document.getElementById(`card-${teamKey}`);
 
-const oldTransform =
-    card.style.transform;
+const exportCard =
+    card.cloneNode(true);
 
-card.style.transform = 'none';
+exportCard.classList.add('exportRender');
+
+exportCard.style.position = 'fixed';
+exportCard.style.left = '-9999px';
+exportCard.style.top = '0';
+
+document.body.appendChild(exportCard);
 
 const canvas =
-    await html2canvas(card,{
+    await html2canvas(exportCard,{
         scale:1,
         useCORS:true
     });
 
-card.style.transform =
-    oldTransform;
+exportCard.remove();
 
 canvas.toBlob(async (blob) => {
 
