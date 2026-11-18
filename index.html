@@ -855,10 +855,10 @@ canvas.toBlob(async (blob) => {
 
 try {
 
-    await navigator.share({
-        files: [file],
-        title: 'Veckans Bästa'
-    });
+    window.open(
+        URL.createObjectURL(file),
+        '_blank'
+);
 
 } catch (err) {
 
