@@ -855,16 +855,14 @@ canvas.toBlob(async (blob) => {
 
 try {
 
-await navigator.share({
-    title: 'Veckans Bästa',
-    text: 'Test'
-});
-
-alert('Efter share');
+    await navigator.share({
+        files: [file],
+        title: 'Veckans Bästa'
+    });
 
 } catch (err) {
 
-alert(err);
+    console.log('Delning avbruten');
 
 }
 
