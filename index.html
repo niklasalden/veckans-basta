@@ -543,7 +543,7 @@ generateBtn.addEventListener('click', async () => {
     const team = TEAMS[teamKey];
 
         const currentMatchInfo =
-            window.bitsMatchInfo?.[teamKey];
+            window.bitsMatchInfo?.[teamKey]?.[0];
 
         const division =
             currentMatchInfo?.matchDivisionName ||
@@ -743,12 +743,12 @@ varkullaMatches.sort(
 
 if (roundId !== null) {
 
-    const roundMatch =
-        varkullaMatches.find(
+    const roundMatches =
+        varkullaMatches.filter(
             match => match.matchRoundId == roundId
         );
 
-    return roundMatch || null;
+    return roundMatches;
 }
 
 const latestMatch =
@@ -767,34 +767,40 @@ async function loadMatchResults() {
         const teamMatch =
             window.bitsMatchInfo[teamKey];
 
-        if (!teamMatch) {
+        console.log(teamMatch[0]);
+
+        console.log(teamKey, teamMatch);
+
+        if (!teamMatch || teamMatch.length === 0) {
         continue;
         }
 
-        const url =
-        `https://bits.swebowl.se/MiscFrontApiConnector/GetMatchResults?matchId=${teamMatch.matchId}&matchSchemeId=8M8BA`;
+const teamPlayers = [];
 
-        const response =
-            await fetch(url);
+for (const match of teamMatch) {
 
-        const data =
-            await response.json();
+    const url =
+    `https://bits.swebowl.se/MiscFrontApiConnector/GetMatchResults?matchId=${match.matchId}&matchSchemeId=8M8BA`;
 
-        const allPlayers = [
-            ...data.playerListHome,
-            ...data.playerListAway
-        ];
+    const response = await fetch(url);
+    const data = await response.json();
 
-        const varkullaSide =
-            teamMatch.matchHomeTeamId ===
-            TEAMS_BITS[teamKey].teamId
-                ? 'H'
-                : 'A';
+    const allPlayers = [
+        ...data.playerListHome,
+        ...data.playerListAway
+    ];
 
-        const teamPlayers = allPlayers.filter(
-            player =>
-            player.homeOrAwayTeam === varkullaSide
-        );
+    const varkullaSide =
+        match.matchHomeTeamId === TEAMS_BITS[teamKey].teamId
+            ? 'H'
+            : 'A';
+
+    const matchPlayers = allPlayers.filter(
+        player => player.homeOrAwayTeam === varkullaSide
+    );
+
+    teamPlayers.push(...matchPlayers);
+}
 
         window.bitsResults[teamKey] = teamPlayers
             .sort((a, b) => b.totalResult - a.totalResult)
