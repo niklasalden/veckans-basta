@@ -853,13 +853,18 @@ canvas.toBlob(async (blob) => {
         navigator.canShare({ files: [file] })
 ) {
 
-        try {
+try {
 
-        alert('Share API körs');
+    alert('Share API körs');
 
     alert(
         navigator.userAgent
     );
+
+    await navigator.share({
+        files: [file],
+        title: 'Veckans Bästa'
+    });
 
 } catch (err) {
 
