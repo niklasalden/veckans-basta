@@ -863,10 +863,10 @@ try {
 
 console.log(file);
 
-    await navigator.share({
-        files: [file],
-        title: 'Veckans Bästa'
-    });
+await navigator.share({
+    title: 'Veckans Bästa',
+    text: 'Test'
+});
 
 alert('Efter share');
 
