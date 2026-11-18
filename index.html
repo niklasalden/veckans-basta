@@ -861,10 +861,14 @@ try {
         navigator.userAgent
     );
 
+console.log(file);
+
     await navigator.share({
         files: [file],
         title: 'Veckans Bästa'
     });
+
+alert('Efter share');
 
 } catch (err) {
 
