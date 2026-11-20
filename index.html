@@ -767,10 +767,6 @@ async function loadMatchResults() {
         const teamMatch =
             window.bitsMatchInfo[teamKey];
 
-        console.log(teamMatch[0]);
-
-        console.log(teamKey, teamMatch);
-
         if (!teamMatch || teamMatch.length === 0) {
         continue;
         }
@@ -799,7 +795,18 @@ for (const match of teamMatch) {
         player => player.homeOrAwayTeam === varkullaSide
     );
 
-    teamPlayers.push(...matchPlayers);
+    matchPlayers.forEach(player => {
+
+    const existing = teamPlayers.find(
+        p => p.licNbr === player.licNbr
+    );
+
+    if (!existing) {
+        teamPlayers.push(player);
+    } else if (Number(player.totalResult) > Number(existing.totalResult)) {
+        teamPlayers[teamPlayers.indexOf(existing)] = player;
+    }
+});
 }
 
         window.bitsResults[teamKey] = teamPlayers
